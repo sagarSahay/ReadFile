@@ -16,17 +16,20 @@ namespace ReadFile
 
             var filePath = configuration.GetSection("FilePath").Value;
 
-            while (Read(filePath, out var result))
+            var readStream = new ReadStream(filePath);
+            do
             {
+                Read(readStream, out var result);
                 Console.WriteLine(result);
-            }
+            } while (!readStream.EndOfStream());
+
+            Console.ReadLine();
         }
 
-        public static bool Read(string filePath, out string val)
+        public static void Read(ReadStream readStream, out string val)
         {
-            var readStream = new ReadStream(filePath);
+
             val = readStream.ReadLine();
-            return string.IsNullOrEmpty(val);
         }
     }
 
@@ -53,6 +56,11 @@ namespace ReadFile
         public string ReadLine()
         {
             return streamReaderLazy.Value.ReadLine();
+        }
+
+        public bool EndOfStream()
+        {
+            return streamReaderLazy.Value.EndOfStream;
         }
     }
 }
