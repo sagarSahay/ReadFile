@@ -16,12 +16,15 @@ namespace ReadFile
 
             var filePath = configuration.GetSection("FilePath").Value;
 
+
             var readStream = new ReadStream(filePath);
             do
             {
                 Read(readStream, out var result);
                 Console.WriteLine(result);
             } while (!readStream.EndOfStream());
+
+
 
             Console.ReadLine();
         }
